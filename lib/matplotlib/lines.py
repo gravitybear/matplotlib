@@ -215,28 +215,32 @@ def _mark_every_path(markevery, tpath, affine, ax_transform):
             'markevery=%s' % (markevery,))
 
 linewidth_scalings = {
-    'xx-thin'   : 0.2,
-    'x-thin'    : 0.5,
+    'xx-thin'   : 0.20,
+    'x-thin'    : 0.50,
     'thin'      : 0.75,
-    'medium'    : 1.000,
-    'thick'     : 1.5,
-    'x-thick'   : 2,
-    'xx-thick'  : 3}
+    'medium'    : 1.00,
+    'thick'     : 1.50,
+    'x-thick'   : 2.00,
+    'xx-thick'  : 3.00}
 
 markersize_scalings = {
-    'xx-small'  : 0.5,
-    'x-small'   : 1,
-    'small'     : 3,
-    'medium'    : 6,
-    'large'     : 10,
-    'x-large'   : 16,
-    'xx-large'  : 22}
+    'xx-small'  : 0.50,
+    'x-small'   : 1.00,
+    'small'     : 3.00,
+    'medium'    : 6.00,
+    'large'     : 10.0,
+    'x-large'   : 16.0,
+    'xx-large'  : 22.0}
 
 def relative_value_to_points(value, is_line):
     """
+    Converts the given value into a point.
 
+    ACCEPTS: [float value in points | 'xx-thin' | 'x-thin' |
+                'thin' | 'medium' | 'thick' | 'x-thick' |
+                'xx-thick' | 'xx-small' | 'x-small' | 'small' |
+                'large' | 'x-large' | 'xx-large']
     """
-
     if isinstance(value, str):
         value = (linewidth_scalings if is_line else markersize_scalings)[value]
 
@@ -245,13 +249,19 @@ def relative_value_to_points(value, is_line):
 
 def linewidth_to_points(w):
     """
+    Converts the given linewidth into a point.
 
+    ACCEPTS: [float value in points | 'xx-thin' | 'x-thin' |
+                'thin' | 'medium' | 'thick' | 'x-thick' | 'xx-thick']
     """
     return relative_value_to_points(w, True)
 
 def markersize_to_points(s):
     """
+    Converts the given markersize into a point.
 
+    ACCEPTS: [float | 'xx-small' | 'x-small' | 'small' |
+                'medium' | 'large' | 'x-large' | 'xx-large']
     """
     return relative_value_to_points(s, False)
 
@@ -1048,7 +1058,8 @@ class Line2D(Artist):
         """
         Set the line width in points
 
-        ACCEPTS: float value in points
+        ACCEPTS: [float value in points | 'xx-thin' | 'x-thin' |
+                    'thin' | 'medium' | 'thick' | 'x-thick' | 'xx-thick']
         """
         if w is None:
             w = rcParams['lines.linewidth']
@@ -1231,7 +1242,8 @@ class Line2D(Artist):
         """
         Set the marker size in points
 
-        ACCEPTS: float
+        ACCEPTS: [float | 'xx-small' | 'x-small' | 'small' |
+                    'medium' | 'large' | 'x-large' | 'xx-large']
         """
         if sz is None:
             sz = rcParams['lines.markersize']

@@ -214,6 +214,46 @@ def _mark_every_path(markevery, tpath, affine, ax_transform):
             'recognized; '
             'markevery=%s' % (markevery,))
 
+linewidth_scalings = {
+    'xx-thin'   : 0.579,
+    'x-thin'    : 0.694,
+    'thin'      : 0.833,
+    'medium'    : 1.000,
+    'thick'     : 1.200,
+    'x-thick'   : 1.440,
+    'xx-thick'  : 1.728}
+
+markersize_scalings = {
+    'xx-small'  : 0.579,
+    'x-small'   : 0.694,
+    'small'     : 0.833,
+    'medium'    : 1.000,
+    'large'     : 1.200,
+    'x-large'   : 1.440,
+    'xx-large'  : 1.728}
+
+def relative_value_to_points(value, is_line):
+    """
+
+    """
+
+    if isinstance(value, str):
+        value = (linewidth_scalings if is_line else markersize_scalings)[value]
+
+    return float(value)
+
+
+def linewidth_to_points(w):
+    """
+
+    """
+    return relative_value_to_points(w, True)
+
+def markersize_to_points(s):
+    """
+
+    """
+    return relative_value_to_points(s, False)
 
 @cbook._define_aliases({
     "antialiased": ["aa"],
@@ -1010,7 +1050,10 @@ class Line2D(Artist):
 
         ACCEPTS: float value in points
         """
-        w = float(w)
+        if w is None:
+            w = rcParams['lines.linewidth']
+
+        w = linewidth_to_points(w)
 
         if self._linewidth != w:
             self.stale = True
@@ -1153,6 +1196,9 @@ class Line2D(Artist):
         """
         if ew is None:
             ew = rcParams['lines.markeredgewidth']
+
+        ew = linewidth_to_points(ew)
+        
         if self._markeredgewidth != ew:
             self.stale = True
         self._markeredgewidth = ew
@@ -1187,7 +1233,11 @@ class Line2D(Artist):
 
         ACCEPTS: float
         """
-        sz = float(sz)
+        if sz is None:
+            sz = rcParams['lines.markersize']
+
+        sz = markersize_to_points(sz)
+
         if self._markersize != sz:
             self.stale = True
         self._markersize = sz

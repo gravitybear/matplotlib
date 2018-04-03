@@ -178,7 +178,6 @@ def validate_string_or_None(s):
     except ValueError:
         raise ValueError('Could not convert "%s" to string' % s)
 
-
 def validate_axisbelow(s):
     try:
         return validate_bool(s)
@@ -971,6 +970,37 @@ def _validate_linestyle(ls):
         raise ValueError("linestyle {!r} is not a valid on-off ink "
                          "sequence.".format(ls))
 
+def validate_linewidth(s):
+    linewidths = ['xx-thin', 'x-thin', 'thin', 'medium', 'thick',
+                 'x-thick', 'xx-thick']
+    if isinstance(s, six.string_types):
+        s = s.lower()
+    if s in linewidths:
+        return s
+    try:
+        return float(s)
+    except ValueError:
+        raise ValueError("%s is not a valid linewidth. Valid linewidths "
+                         "are %s." % (s, ", ".join(linewidths)))
+
+validate_linewidthlist = _listify_validator(validate_linewidth)
+
+
+def validate_markersize(s):
+    markersizes = ['xx-small', 'x-small', 'small', 'medium', 'large',
+                 'x-large', 'xx-large']
+    if isinstance(s, six.string_types):
+        s = s.lower()
+    if s in markersizes:
+        return s
+    try:
+        return float(s)
+    except ValueError:
+        raise ValueError("%s is not a valid marker size. Valid marker sizes "
+                         "are %s." % (s, ", ".join(markersizes)))
+
+validate_markersizelist = _listify_validator(validate_markersize)    
+
 
 # a map from key -> value, converter
 defaultParams = {
@@ -995,14 +1025,14 @@ defaultParams = {
     'verbose.fileo': ['sys.stdout', validate_string],
 
     # line props
-    'lines.linewidth':       [1.5, validate_float],  # line width in points
+    'lines.linewidth':       [1.5, validate_linewidth],  # line width in points
     'lines.linestyle':       ['-', _validate_linestyle],  # solid line
     'lines.color':           ['C0', validate_color],  # first color in color cycle
     'lines.marker':          ['None', validate_string],  # marker name
     'lines.markerfacecolor': ['auto', validate_color_or_auto],  # default color
     'lines.markeredgecolor': ['auto', validate_color_or_auto],  # default color
     'lines.markeredgewidth': [1.0, validate_float],
-    'lines.markersize':      [6, validate_float],    # markersize, in points
+    'lines.markersize':      [6, validate_markersize],    # markersize, in points
     'lines.antialiased':     [True, validate_bool],  # antialiased (no jaggies)
     'lines.dash_joinstyle':  ['round', validate_joinstyle],
     'lines.solid_joinstyle': ['round', validate_joinstyle],
@@ -1047,33 +1077,33 @@ defaultParams = {
     'boxplot.flierprops.marker': ['o', validate_string],
     'boxplot.flierprops.markerfacecolor': ['none', validate_color_or_auto],
     'boxplot.flierprops.markeredgecolor': ['black', validate_color],
-    'boxplot.flierprops.markersize': [6, validate_float],
+    'boxplot.flierprops.markersize': [6, validate_markersize],
     'boxplot.flierprops.linestyle': ['none', _validate_linestyle],
-    'boxplot.flierprops.linewidth': [1.0, validate_float],
+    'boxplot.flierprops.linewidth': [1.0, validate_linewidth],
 
     'boxplot.boxprops.color': ['black', validate_color],
-    'boxplot.boxprops.linewidth': [1.0, validate_float],
+    'boxplot.boxprops.linewidth': [1.0, validate_linewidth],
     'boxplot.boxprops.linestyle': ['-', _validate_linestyle],
 
     'boxplot.whiskerprops.color': ['black', validate_color],
-    'boxplot.whiskerprops.linewidth': [1.0, validate_float],
+    'boxplot.whiskerprops.linewidth': [1.0, validate_linewidth],
     'boxplot.whiskerprops.linestyle': ['-', _validate_linestyle],
 
     'boxplot.capprops.color': ['black', validate_color],
-    'boxplot.capprops.linewidth': [1.0, validate_float],
+    'boxplot.capprops.linewidth': [1.0, validate_linewidth],
     'boxplot.capprops.linestyle': ['-', _validate_linestyle],
 
     'boxplot.medianprops.color': ['C1', validate_color],
-    'boxplot.medianprops.linewidth': [1.0, validate_float],
+    'boxplot.medianprops.linewidth': [1.0, validate_linewidth],
     'boxplot.medianprops.linestyle': ['-', _validate_linestyle],
 
     'boxplot.meanprops.color': ['C2', validate_color],
     'boxplot.meanprops.marker': ['^', validate_string],
     'boxplot.meanprops.markerfacecolor': ['C2', validate_color],
     'boxplot.meanprops.markeredgecolor': ['C2', validate_color],
-    'boxplot.meanprops.markersize': [6, validate_float],
+    'boxplot.meanprops.markersize': [6, validate_markersize],
     'boxplot.meanprops.linestyle': ['--', _validate_linestyle],
-    'boxplot.meanprops.linewidth': [1.0, validate_float],
+    'boxplot.meanprops.linewidth': [1.0, validate_linewidth],
 
     ## font props
     'font.family':     [['sans-serif'], validate_stringlist],  # used by text object

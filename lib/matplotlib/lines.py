@@ -215,22 +215,22 @@ def _mark_every_path(markevery, tpath, affine, ax_transform):
             'markevery=%s' % (markevery,))
 
 linewidth_scalings = {
-    'xx-thin'   : 0.579,
-    'x-thin'    : 0.694,
-    'thin'      : 0.833,
+    'xx-thin'   : 0.2,
+    'x-thin'    : 0.5,
+    'thin'      : 0.75,
     'medium'    : 1.000,
-    'thick'     : 1.200,
-    'x-thick'   : 1.440,
-    'xx-thick'  : 1.728}
+    'thick'     : 1.5,
+    'x-thick'   : 2,
+    'xx-thick'  : 3}
 
 markersize_scalings = {
-    'xx-small'  : 0.579,
-    'x-small'   : 0.694,
-    'small'     : 0.833,
-    'medium'    : 1.000,
-    'large'     : 1.200,
-    'x-large'   : 1.440,
-    'xx-large'  : 1.728}
+    'xx-small'  : 0.5,
+    'x-small'   : 1,
+    'small'     : 3,
+    'medium'    : 6,
+    'large'     : 10,
+    'x-large'   : 16,
+    'xx-large'  : 22}
 
 def relative_value_to_points(value, is_line):
     """

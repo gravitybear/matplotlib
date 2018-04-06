@@ -487,14 +487,20 @@ class Collection(artist.Artist, cm.ScalarMappable):
         or a sequence; if it is a sequence the patches will cycle
         through the sequence
 
-        ACCEPTS: float or sequence of floats
+        ACCEPTS: [float | sequence of floats | sequence of strings |
+                    'xx-thin' | 'x-thin' | 'thin' | 'medium' |
+                    'thick' | 'x-thick' | 'xx-thick' | None]
         """
         if lw is None:
             lw = mpl.rcParams['patch.linewidth']
             if lw is None:
                 lw = mpl.rcParams['lines.linewidth']
         # get the un-scaled/broadcast lw
-        self._us_lw = np.atleast_1d(np.asarray(lw))
+        us_lw = np.atleast_1d(np.asarray(lw))
+
+        # convert string linewidths to points
+        self._us_lw = np.array([mlines.linewidth_to_points(x)
+                for x in us_lw])
 
         # scale all of the dash patterns.
         self._linewidths, self._linestyles = self._bcast_lwls(

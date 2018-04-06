@@ -214,6 +214,7 @@ def _mark_every_path(markevery, tpath, affine, ax_transform):
             'recognized; '
             'markevery=%s' % (markevery,))
 
+# default scale values for keywords given for linewidth
 linewidth_scalings = {
     'xx-thin'   : 0.20,
     'x-thin'    : 0.50,
@@ -223,6 +224,7 @@ linewidth_scalings = {
     'x-thick'   : 2.00,
     'xx-thick'  : 3.00}
 
+# default scale values for keywords given for markersize
 markersize_scalings = {
     'xx-small'  : 0.50,
     'x-small'   : 1.00,
@@ -234,9 +236,9 @@ markersize_scalings = {
 
 def relative_value_to_points(value, is_line):
     """
-    Converts the given value into a point.
+    Converts relative size value to points.
 
-    ACCEPTS: [float value in points | 'xx-thin' | 'x-thin' |
+    ACCEPTS: [float | 'xx-thin' | 'x-thin' |
                 'thin' | 'medium' | 'thick' | 'x-thick' |
                 'xx-thick' | 'xx-small' | 'x-small' | 'small' |
                 'large' | 'x-large' | 'xx-large']
@@ -1058,7 +1060,7 @@ class Line2D(Artist):
         """
         Set the line width in points
 
-        ACCEPTS: [float value in points | 'xx-thin' | 'x-thin' |
+        ACCEPTS: [float value in points | None | 'xx-thin' | 'x-thin' |
                     'thin' | 'medium' | 'thick' | 'x-thick' | 'xx-thick']
         """
         if w is None:
@@ -1203,7 +1205,9 @@ class Line2D(Artist):
         """
         Set the marker edge width in points
 
-        ACCEPTS: float value in points
+        ACCEPTS: [float value in points | None | 'xx-thin' |
+                    'x-thin' | 'thin' | 'medium' |
+                    'thick' |'x-thick' | 'xx-thick']
         """
         if ew is None:
             ew = rcParams['lines.markeredgewidth']
@@ -1242,7 +1246,7 @@ class Line2D(Artist):
         """
         Set the marker size in points
 
-        ACCEPTS: [float | 'xx-small' | 'x-small' | 'small' |
+        ACCEPTS: [float | None | 'xx-small' | 'x-small' | 'small' |
                     'medium' | 'large' | 'x-large' | 'xx-large']
         """
         if sz is None:

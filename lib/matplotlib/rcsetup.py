@@ -971,6 +971,10 @@ def _validate_linestyle(ls):
                          "sequence.".format(ls))
 
 def validate_linewidth(s):
+    """
+    A validator for all possible linewidths; which can be given as a
+    float, or specific quantitative string values.
+    """
     linewidths = ['xx-thin', 'x-thin', 'thin', 'medium', 'thick',
                  'x-thick', 'xx-thick']
     if isinstance(s, six.string_types):
@@ -987,6 +991,10 @@ validate_linewidthlist = _listify_validator(validate_linewidth)
 
 
 def validate_markersize(s):
+    """
+    A validator for all possible markersizes; which can be given as a
+    float, or specific quantitative string values.
+    """
     markersizes = ['xx-small', 'x-small', 'small', 'medium', 'large',
                  'x-large', 'xx-large']
     if isinstance(s, six.string_types):

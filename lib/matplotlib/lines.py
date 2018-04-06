@@ -216,59 +216,87 @@ def _mark_every_path(markevery, tpath, affine, ax_transform):
 
 # default scale values for keywords given for linewidth
 linewidth_scalings = {
-    'xx-thin'   : 0.20,
+    'xx-thin'   : 0.25,
     'x-thin'    : 0.50,
     'thin'      : 0.75,
     'medium'    : 1.00,
-    'thick'     : 1.50,
-    'x-thick'   : 2.00,
+    'thick'     : 1.67,
+    'x-thick'   : 2.34,
     'xx-thick'  : 3.00}
 
 # default scale values for keywords given for markersize
 markersize_scalings = {
-    'xx-small'  : 0.50,
-    'x-small'   : 1.00,
-    'small'     : 3.00,
-    'medium'    : 6.00,
-    'large'     : 10.0,
-    'x-large'   : 16.0,
-    'xx-large'  : 22.0}
+    'xx-small'  : 0.25,
+    'x-small'   : 0.50,
+    'small'     : 0.75,
+    'medium'    : 1.00,
+    'large'     : 1.50,
+    'x-large'   : 2.00,
+    'xx-large'  : 2.50}
 
-def _relative_value_to_points(value, is_line):
+def _relative_value_to_points(value, is_line, rel=2.0):
     """
-    Converts relative size value to points. Strings given for
-    linewidth expects a thickness (i.e. 'thin', 'x-thick', etc),
-    and markersize expects a size (i.e. 'large', 'xx-small', etc).
+    Converts *value* into points. If *value* is a string, the result
+    will be relative to *rel*, a value in rcParams
+    (i.e. :rc:`lines.base.linewidth`, :rc:`lines.base.markersize`),
+    where linewidth expects a thickness (e.g. 'thin', 'x-thick', etc),
+    and markersize expects a size (e.g. 'large', 'xx-small', etc).
 
+    Parameters
+    ----------
+    value : {float, 'xx-thin', 'x-thin', \
+                'thin', 'medium', 'thick', 'x-thick', \
+                'xx-thick', 'xx-small', 'x-small', 'small', \
+                'large', 'x-large', 'xx-large'}
 
-    ACCEPTS: [float | 'xx-thin' | 'x-thin' |
-                'thin' | 'medium' | 'thick' | 'x-thick' |
-                'xx-thick' | 'xx-small' | 'x-small' | 'small' |
-                'large' | 'x-large' | 'xx-large']
+    is_line : boolean
+            Defines whether the conversion is for a line width (True),
+            or for a marker size (False).
+
+    rel : float, default: 2.0
+
+    Returns
+    -------
+    value : float
     """
     if isinstance(value, str):
-        value = (linewidth_scalings if is_line else markersize_scalings)[value]
+        value = (linewidth_scalings if is_line else markersize_scalings)[value] * rel
+
 
     return float(value)
 
 
 def linewidth_to_points(w):
     """
-    Converts the given linewidth into a point.
+    Converts the given linewidth into a point;
+    relative to :rc:`lines.base.linewidth` if it's a string.
 
-    ACCEPTS: [float value in points | 'xx-thin' | 'x-thin' |
-                'thin' | 'medium' | 'thick' | 'x-thick' | 'xx-thick']
+    Parameters
+    ----------
+    w : {float, 'xx-thin', 'x-thin', 'thin',\
+                'medium', 'thick', 'x-thick', 'xx-thick'}
+
+    Returns
+    -------
+    float
     """
-    return _relative_value_to_points(w, True)
+    return _relative_value_to_points(w, True, rcParams['lines.base.linewidth'])
 
 def markersize_to_points(s):
     """
-    Converts the given markersize into a point.
+    Converts the given markersize into a point;
+    relative to :rc:`lines.base.markersize` if it's a string.
 
-    ACCEPTS: [float | 'xx-small' | 'x-small' | 'small' |
-                'medium' | 'large' | 'x-large' | 'xx-large']
+    Parameters
+    ----------
+    s : {float, 'xx-small', 'x-small', 'small', \
+            'medium', large', 'x-large', 'xx-large'}
+
+    Returns
+    -------
+    float
     """
-    return _relative_value_to_points(s, False)
+    return _relative_value_to_points(s, False, rcParams['lines.base.markersize'])
 
 @cbook._define_aliases({
     "antialiased": ["aa"],

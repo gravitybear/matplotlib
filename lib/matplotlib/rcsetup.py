@@ -1050,7 +1050,9 @@ defaultParams = {
     'lines.dashdot_pattern': [[6.4, 1.6, 1, 1.6],
                               validate_nseq_float(allow_none=True)],
     'lines.dotted_pattern':  [[1, 1.65], validate_nseq_float(allow_none=True)],
-    'lines.scale_dashes':  [True, validate_bool],
+    'lines.scale_dashes':    [True, validate_bool],
+    'lines.base.linewidth':  [1.5, validate_float],  # base line width in points
+    'lines.base.markersize': [6.0, validate_float],  # base markersize in points
 
     # marker props
     'markers.fillstyle': ['full', validate_fillstyle],

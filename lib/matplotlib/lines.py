@@ -234,9 +234,12 @@ markersize_scalings = {
     'x-large'   : 16.0,
     'xx-large'  : 22.0}
 
-def relative_value_to_points(value, is_line):
+def _relative_value_to_points(value, is_line):
     """
-    Converts relative size value to points.
+    Converts relative size value to points. Strings given for
+    linewidth expects a thickness (i.e. 'thin', 'x-thick', etc),
+    and markersize expects a size (i.e. 'large', 'xx-small', etc).
+
 
     ACCEPTS: [float | 'xx-thin' | 'x-thin' |
                 'thin' | 'medium' | 'thick' | 'x-thick' |
@@ -256,7 +259,7 @@ def linewidth_to_points(w):
     ACCEPTS: [float value in points | 'xx-thin' | 'x-thin' |
                 'thin' | 'medium' | 'thick' | 'x-thick' | 'xx-thick']
     """
-    return relative_value_to_points(w, True)
+    return _relative_value_to_points(w, True)
 
 def markersize_to_points(s):
     """
@@ -265,7 +268,7 @@ def markersize_to_points(s):
     ACCEPTS: [float | 'xx-small' | 'x-small' | 'small' |
                 'medium' | 'large' | 'x-large' | 'xx-large']
     """
-    return relative_value_to_points(s, False)
+    return _relative_value_to_points(s, False)
 
 @cbook._define_aliases({
     "antialiased": ["aa"],

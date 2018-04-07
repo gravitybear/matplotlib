@@ -262,7 +262,6 @@ def _relative_value_to_points(value, is_line, rel=2.0):
     if isinstance(value, str):
         value = (linewidth_scalings if is_line else markersize_scalings)[value] * rel
 
-
     return float(value)
 
 

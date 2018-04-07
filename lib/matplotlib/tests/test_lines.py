@@ -13,6 +13,7 @@ from cycler import cycler
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.testing.decorators import image_comparison
+from matplotlib.collections import LineCollection
 
 
 # Runtimes on a loaded system are inherently flaky. Not so much that a rerun
@@ -197,3 +198,49 @@ def test_nan_is_sorted():
     assert line._is_sorted(np.array([1, 2, 3]))
     assert line._is_sorted(np.array([1, np.nan, 3]))
     assert not line._is_sorted([3, 5] + [np.nan] * 100 + [0, 2])
+
+
+@image_comparison(baseline_images=['marker_sizes'])
+def test_marker_sizes():
+    markersizes = itertools.cycle(['xx-small', 'x-small', 'small', 'medium',
+                                   'large', 'x-large', 'xx-large'])
+
+    fig, ax = plt.subplots()
+
+    for i, marker in enumerate(mlines.markersize_scalings):
+        markersize = next(markersizes)
+        plt.rcParams['lines.markersize'] = markersize
+        ax.plot(0, i, marker='o')
+
+
+@image_comparison(baseline_images=['line_widths'])
+def test_line_widths():
+    linewidths = itertools.cycle(['xx-thin', 'x-thin', 'thin', 'medium',
+                                  'thick', 'x-thick', 'xx-thick'])
+
+    y = np.array([1, 1])
+    x = np.array([0, 9])
+    fig, ax = plt.subplots()
+
+    for i, marker in enumerate(mlines.markersize_scalings):
+        linewidth = next(linewidths)
+        plt.rcParams['lines.linewidth'] = linewidth
+        ax.plot(x, y + i)
+
+
+@image_comparison(baseline_images=['line_collection_widths'])
+def test_line_coll_relative_widths():
+    N = len(mlines.linewidth_scalings)
+    x = np.arange(N)
+    ys = [x + i for i in x]
+
+    fig, ax = plt.subplots()
+    ax.set_xlim(np.min(x), np.max(x))
+    ax.set_ylim(np.min(ys), np.max(ys))
+
+    line_segments = LineCollection([np.column_stack([x, y]) for y in ys],
+                                   linewidths=('xx-thin', 'x-thin', 'thin',
+                                               'medium', 'thick', 'x-thick',
+                                               'xx-thick'))
+    line_segments.set_array(x)
+    ax.add_collection(line_segments)
